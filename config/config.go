@@ -22,6 +22,13 @@ type DatabaseConfig struct {
 	Schema		  string `yaml:"schema"`
 }
 
+func (db DatabaseConfig) ConnString() string {
+	return fmt.Sprintf(
+		"postgresql://%s:%s@%s:%d/%s?sslmode=%s&search_path=%s",
+		db.User, db.Password, db.Host, db.Port, db.Dbname, db.Sslmode, db.Schema,
+	)
+}
+
 type Config struct {
 	DB DatabaseConfig `yaml:"database"`
 	Server  ServerConfig `yaml:"server"`

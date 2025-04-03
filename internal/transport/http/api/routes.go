@@ -1,8 +1,10 @@
 package api
 
 import (
-	"github.com/gorilla/mux"
 	"net/http"
+	"context"
+
+	"github.com/gorilla/mux"
 )
 
 type IHandler interface {
@@ -12,13 +14,13 @@ type IHandler interface {
 	Insert(w http.ResponseWriter, r *http.Request)
 }
 
-func NewRouter(h IHandler) *mux.Router {
+func NewRouter(ctx context.Context, h IHandler) *mux.Router {
 	router := mux.NewRouter()
 
-	router.HandleFunc("api/get", h.Get).Methods("GET")
-	router.HandleFunc("api/delete", h.Delete).Methods("DELETE")
-	router.HandleFunc("api/update", h.Update).Methods("PATCH")
-	router.HandleFunc("api/insert", h.Insert).Methods("POST")
+	router.HandleFunc("/api/persons", h.Get).Methods("GET")
+	router.HandleFunc("/api/persons/{id}", h.Delete).Methods("DELETE")
+	router.HandleFunc("/api/persons/{id}", h.Update).Methods("PATCH")
+	router.HandleFunc("/api/persons", h.Insert).Methods("POST")
 
 	return router
 }

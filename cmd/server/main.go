@@ -6,9 +6,13 @@ import (
 	"os"
 	"os/signal"
 	"time"
+	"net/http"
+	"fmt"
+
 	"EffectiveMobile/internal/transport/http/api"
 	"EffectiveMobile/config"
 	"EffectiveMobile/internal/database"
+	"EffectiveMobile/internal/logger"
 	"EffectiveMobile/internal/repository"
 	"EffectiveMobile/internal/service"
 )
@@ -40,13 +44,13 @@ func main() {
 	}
 
 	// 3. Создаем репозитории
-	userRepo := repository.NewUserRepository(dbPool)
+	personRepo := repository.NewPersonRepository(dbPool, cfg)
 
 	// 4. Создаем сервисы
-	userService := service.NewUserService(userRepo, cfg)
+	personService := service.NewPersonService(personRepo)
 
 	// 5. Создаем хэндлер
-	handler := api.NewHandler(userService)
+	handler := api.NewHandler(ctx, personService)
 
 	// 6. Создаём роутер
 	router := api.NewRouter(ctx, handler)
