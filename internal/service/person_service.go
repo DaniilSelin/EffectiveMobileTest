@@ -11,10 +11,10 @@ import (
 )
 
 type IPersonRepository interface {
-	Get(ctx context.Context, filters models.PersonFilters, limit, offset int) (*[]models.Person, error)
-	Delete(ctx context.Context, id string) error
-	Insert(ctx context.Context, person models.Person) error
-	Update(ctx context.Context, id string, person models.Person) error
+	Get(context.Context, models.PersonFilters, int, int) (*[]models.Person, error)
+	Delete(context.Context,string) error
+	Insert(context.Context, models.Person) error
+	Update(context.Context, string, models.Person) error
 }
 
 type PersonService struct {

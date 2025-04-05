@@ -22,5 +22,12 @@ func NewRouter(ctx context.Context, h IHandler) *mux.Router {
 	router.HandleFunc("/api/persons/{id}", h.Update).Methods("PATCH")
 	router.HandleFunc("/api/persons", h.Insert).Methods("POST")
 
+	// вообщ предпологается, что RequestIDx будет генерироваться на frontend
+	// Я же попробовал это сделать в middleware
+	// Но это, возможно, затирает контекст запроса
+	// поэтому решил во всех функциях генерировать RequestID
+	// mw := NewMiddlerWare(ctx)
+	// router.Use(mw.MiddleWareFunc)
+
 	return router
 }

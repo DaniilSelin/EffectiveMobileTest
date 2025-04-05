@@ -2,24 +2,25 @@ package config
 
 import (
 	"fmt"
-	"os"
+	"log"
 	
-	"gopkg.in/yaml.v2"
+	"github.com/caarlos0/env/v10"
+	"github.com/joho/godotenv"
 )
 
 type ServerConfig struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
+	Host string `env:"SERVER_HOST"`
+	Port int    `env:"SERVER_PORT"`
 }
 
 type DatabaseConfig struct {
-	Host          string `yaml:"host"`
-	Port          int    `yaml:"port"`
-	User          string `yaml:"user"`
-	Password      string `yaml:"password"`
-	Dbname        string `yaml:"dbname"`
-	Sslmode       string `yaml:"sslmode"`
-	Schema		  string `yaml:"schema"`
+    Host     string `env:"DB_HOST"`
+    Port     int    `env:"DB_PORT"`
+    User     string `env:"DB_USER"`
+    Password string `env:"DB_PASSWORD"`
+    Dbname   string `env:"DB_NAME"`
+    Sslmode  string `env:"DB_SSLMODE"`
+    Schema   string `env:"DB_SCHEMA"`
 }
 
 func (db DatabaseConfig) ConnString() string {
@@ -30,22 +31,20 @@ func (db DatabaseConfig) ConnString() string {
 }
 
 type Config struct {
-	DB DatabaseConfig `yaml:"database"`
-	Server  ServerConfig `yaml:"server"`
+	DB DatabaseConfig
+	Server  ServerConfig 
 }
 
-func LoadConfig(filename string) (*Config, error) {
-	file, err := os.Open(filename)
-	if err != nil {
-		return nil, fmt.Errorf("could not open config file: %v", err)
+func LoadConfig() (*Config, error) {
+	if err := godotenv.Load(); err != nil {
+		log.Printf("No .env file found: %v", err)
 	}
-	defer file.Close()
 
 	var config Config
-	decoder := yaml.NewDecoder(file)
-	err = decoder.Decode(&config)
-	if err != nil {
-		return nil, fmt.Errorf("could not decode config file: %v", err)
+	if err := env.Parse(&config); err != nil {
+		return nil, fmt.Errorf("could not parse environment variables: %v", err)
 	}
+
+	log.Printf("Loaded config: %+v", config)
 	return &config, nil
 }

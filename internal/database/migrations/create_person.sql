@@ -6,6 +6,6 @@ CREATE TABLE IF NOT EXISTS %s.person (
     surname VARCHAR(255) NOT NULL,
     patronymic VARCHAR(255),
     age INTEGER,
-    gender VARCHAR(10) CHECK (gender IN ('male', 'female', 'unknown')),
-    nationalize VARCHAR(255)
+    gender VARCHAR(10),
+    nationality VARCHAR(255)
 );

@@ -10,12 +10,17 @@ package enrichment
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 	"net/http"
 )
 
 func GetAge(name string) (int, error) {
+	client := &http.Client{
+		Timeout: 5 * time.Second,
+	}
+
 	url := fmt.Sprintf("https://api.agify.io/?name=%s", name)
-	resp, err := http.Get(url)
+	resp, err := client.Get(url)
 	if err != nil {
 		return 0, err
 	}
@@ -28,13 +33,16 @@ func GetAge(name string) (int, error) {
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return 0, err
 	}
-
 	return result.Age, nil
 }
 
 func GetGender(name string) (string, error) {
-	url := fmt.Sprintf("https://api.genderize.io/?name=%s", name)
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 5 * time.Second, 
+	}
+
+	url := fmt.Sprintf("https://api.agify.io/?name=%s", name)
+	resp, err := client.Get(url)
 	if err != nil {
 		return "", err
 	}
@@ -52,8 +60,12 @@ func GetGender(name string) (string, error) {
 }
 
 func GetNationality(name string) (string, error) {
-	url := fmt.Sprintf("https://api.nationalize.io/?name=%s", name)
-	resp, err := http.Get(url)
+	client := &http.Client{
+		Timeout: 5 * time.Second, 
+	}
+
+	url := fmt.Sprintf("https://api.agify.io/?name=%s", name)
+	resp, err := client.Get(url)
 	if err != nil {
 		return "", err
 	}

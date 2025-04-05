@@ -25,7 +25,7 @@ func main() {
 		log.Fatalf("Error create logger: %v", err)
 	}
 
-	cfg, err := config.LoadConfig("config/config.yml")
+	cfg, err := config.LoadConfig()
 	if err != nil {
 		log.Fatalf("Error loading config: %v", err)
 	}
