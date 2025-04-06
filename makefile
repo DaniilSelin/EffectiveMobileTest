@@ -23,5 +23,5 @@ help:
 	@echo "Available commands:"
 	@echo "  make build   - Build server and client"
 	@echo "  make run     - Start the server"
-	@echo "	 make stop 	  - Send SIGINT signal!!! Server Shutdown"
+	@echo "	 make stop    - Send SIGINT signal on port 8080!!! Server Shutdown"
 	@echo "  make clean   - Remove binaries and Unix socket"
